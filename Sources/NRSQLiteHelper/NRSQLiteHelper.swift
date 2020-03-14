@@ -9,7 +9,7 @@
 import Foundation
 import SQLite3
 
-class NRSQLiteHelper {
+public class NRSQLiteHelper {
 
     private let databaseName:String
     private var db:OpaquePointer?
