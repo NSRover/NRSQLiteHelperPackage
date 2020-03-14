@@ -21,7 +21,7 @@ public class NRSQLiteHelper {
 
     // MARK: Initialisation
 
-    init?(dbFile:String?) {
+    public init?(dbFile:String?) {
         databaseName = dbFile ?? "Database.sqlite"
         let fileURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent(databaseName)
 
@@ -33,7 +33,7 @@ public class NRSQLiteHelper {
         print("Database path: \(fileURL.path)")
     }
 
-    class func destroy(dbFile:String?) {
+    public class func destroy(dbFile:String?) {
         let databaseName = dbFile ?? "Database.sqlite"
         let fileURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(databaseName)
         if FileManager.default.fileExists(atPath: fileURL.path) {
@@ -47,7 +47,7 @@ public class NRSQLiteHelper {
 
     // MARK: SQL
 
-    func executeQuery(query:String, parameters:[Any]?) -> Bool {
+    public func executeQuery(query:String, parameters:[Any]?) -> Bool {
         var returnValue = false
         queue.sync {
             if let statement = prepare(query: query, parameters: parameters) {
@@ -63,7 +63,7 @@ public class NRSQLiteHelper {
         return returnValue
     }
 
-    func executeInsertQuery(query:String, parameters:[Any]?) -> Int? {
+    public func executeInsertQuery(query:String, parameters:[Any]?) -> Int? {
         var returnValue:Int? = nil
         queue.sync {
             if let statement = prepare(query: query, parameters: parameters) {
@@ -84,7 +84,7 @@ public class NRSQLiteHelper {
         return returnValue
     }
 
-    func executeFetchQuery(query:String, parameters:[Any]?) -> [[String:Any]]? {
+    public func executeFetchQuery(query:String, parameters:[Any]?) -> [[String:Any]]? {
         var returnValue:[[String:Any]]? = nil
         queue.sync {
             if let statement = prepare(query: query, parameters: parameters) {
