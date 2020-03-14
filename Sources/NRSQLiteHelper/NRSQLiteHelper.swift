@@ -27,10 +27,10 @@ public class NRSQLiteHelper {
 
         //Open database
         if sqlite3_open(fileURL.path, &db) != SQLITE_OK {
-            print("Error opening database")
+            print("NRSQLiteHelper: Error opening database")
             return nil
         }
-        print("Database path: \(fileURL.path)")
+        print("NRSQLiteHelper: Database path: \(fileURL.path)")
     }
 
     public class func destroy(dbFile:String?) {
@@ -40,7 +40,7 @@ public class NRSQLiteHelper {
             do {
                 try FileManager.default.removeItem(at: fileURL)
             } catch {
-                print("Exception while destroying database: \(error)")
+                print("NRSQLiteHelper: Exception while destroying database: \(error)")
             }
         }
     }
@@ -55,7 +55,7 @@ public class NRSQLiteHelper {
                 if result == SQLITE_DONE {
                     returnValue = true
                 } else {
-                    print("Error \(result) when executing query \(query)")
+                    print("NRSQLiteHelper: Error \(result) when executing query \(query)")
                 }
                 sqlite3_finalize(statement)
             }
@@ -73,10 +73,10 @@ public class NRSQLiteHelper {
                     if rowId > 0 {
                         returnValue = rowId
                     } else {
-                        print("Error fetching rowId when executing query \(query)")
+                        print("NRSQLiteHelper: Error fetching rowId when executing query \(query)")
                     }
                 } else {
-                    print("Error \(result) when executing query \(query)")
+                    print("NRSQLiteHelper: Error \(result) when executing query \(query)")
                 }
                 sqlite3_finalize(statement)
             }
@@ -119,20 +119,20 @@ public class NRSQLiteHelper {
 
     private func prepare(query:String, parameters:[Any]?) -> OpaquePointer? {
         guard let db = db else {
-            print("Database not initialised before prepare")
+            print("NRSQLiteHelper: Database not initialised before prepare")
             return nil
         }
 
         var statement:OpaquePointer? = nil
         guard let cQuery = query.cString(using: .utf8) else {
-            print("Error converting \(query) to utf8")
+            print("NRSQLiteHelper: Error converting \(query) to utf8")
             return nil
         }
 
         let result = sqlite3_prepare_v2(db, cQuery, -1, &statement, nil)
         if result != SQLITE_OK {
             sqlite3_finalize(statement)
-            print("Error preparing statement \(query)")
+            print("NRSQLiteHelper: Error preparing statement \(query)")
             return nil
         }
 
@@ -141,7 +141,7 @@ public class NRSQLiteHelper {
             //Validate if number of parameters match the count in the query
             let queryCount = sqlite3_bind_parameter_count(statement)
             if queryCount != CInt(params.count) {
-                print("Number of parameters passed do not match the number expected in Query")
+                print("NRSQLiteHelper: Number of parameters passed do not match the number expected in Query")
                 return nil
             }
 
@@ -161,7 +161,7 @@ public class NRSQLiteHelper {
                 //Check binding result
                 if bindResult != SQLITE_OK {
                     sqlite3_finalize(statement)
-                    print("Error binding \(parameter) in sql prepare statement")
+                    print("NRSQLiteHelper: Error binding \(parameter) in sql prepare statement")
                     return nil
                 }
             }
