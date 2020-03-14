@@ -3,5 +3,5 @@ import XCTest
 import NRSQLiteHelperTests
 
 var tests = [XCTestCaseEntry]()
-tests += NRSQLiteHelperTests.allTests()
+//tests += NRSQLiteHelperTests.allTests()
 XCTMain(tests)
